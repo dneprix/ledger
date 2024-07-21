@@ -1,0 +1,19 @@
+syntax = "proto3";
+
+package ledger.ledger;
+
+import "amino/amino.proto";
+import "gogoproto/gogo.proto";
+import "ledger/ledger/params.proto";
+import "ledger/ledger/account.proto";
+
+option go_package = "github.com/dneprix/ledger/x/ledger/types";
+
+// GenesisState defines the ledger module's genesis state.
+message GenesisState {
+  
+  // params defines all the parameters of the module.
+           Params  params      = 1 [(gogoproto.nullable) = false, (amino.dont_omitempty) = true];
+  repeated Account accountList = 2 [(gogoproto.nullable) = false] ;
+}
+

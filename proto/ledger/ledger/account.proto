@@ -1,0 +1,13 @@
+syntax = "proto3";
+package ledger.ledger;
+
+option go_package = "github.com/dneprix/ledger/x/ledger/types";
+import "gogoproto/gogo.proto"; 
+import "cosmos/base/v1beta1/coin.proto"; 
+
+message Account {
+  string address = 1; 
+  cosmos.base.v1beta1.Coin balance = 2 [(gogoproto.nullable) = false]; 
+  string creator = 3;
+}
+

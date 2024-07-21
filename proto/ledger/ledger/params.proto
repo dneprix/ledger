@@ -1,0 +1,15 @@
+syntax = "proto3";
+package ledger.ledger;
+
+import "amino/amino.proto";
+import "gogoproto/gogo.proto";
+
+option go_package = "github.com/dneprix/ledger/x/ledger/types";
+
+// Params defines the parameters for the module.
+message Params {
+  option (amino.name) = "ledger/x/ledger/Params";
+  option (gogoproto.equal) = true;
+
+  
+}
