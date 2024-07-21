@@ -6,46 +6,72 @@
 ```
 ignite chain serve
 ```
-
 `serve` command installs dependencies, builds, initializes, and starts your blockchain in development.
 
-### Configure
-
-Your blockchain in development can be configured with `config.yml`. To learn more, see the [Ignite CLI docs](https://docs.ignite.com).
-
-### Web Frontend
-
-Additionally, Ignite CLI offers both Vue and React options for frontend scaffolding:
-
-For a Vue frontend, use: `ignite scaffold vue`
-For a React frontend, use: `ignite scaffold react`
-These commands can be run within your scaffolded blockchain project. 
-
-
-For more information see the [monorepo for Ignite front-end development](https://github.com/ignite/web).
-
-## Release
-To release a new version of your blockchain, create and push a new tag with `v` prefix. A new draft release with the configured targets will be created.
 
 ```
-git tag v0.1
-git push origin v0.1
+ Blockchain is running
+  
+  👤 alice's account address: cosmos15u9nl5n4524lc8zp36r6qvcqlqsma4jxx02fhd
+  👤 bob's account address: cosmos1hpdvdzxhxsgfzxntm4rr2fqu90hryxwjx35e7m
+  
+  🌍 Tendermint node: http://0.0.0.0:26657
+  🌍 Blockchain API: http://0.0.0.0:1317
+  🌍 Token faucet: http://0.0.0.0:4500
 ```
 
-After a draft release is created, make your final changes from the release page and publish it.
+# Run tests
 
-### Install
-To install the latest version of your blockchain node's binary, execute the following command on your machine:
+Now you can run the tests to ensure that everything is working correctly:
 
 ```
-curl https://get.ignite.com/dneprix/ledger@latest! | sudo bash
+go test ./x/ledger/keeper -v
 ```
-`dneprix/ledger` should match the `username` and `repo_name` of the Github repository to which the source code was pushed. Learn more about [the install process](https://github.com/allinbits/starport-installer).
 
-## Learn more
+# Ledger module
 
-- [Ignite CLI](https://ignite.com/cli)
-- [Tutorials](https://docs.ignite.com/guide)
-- [Ignite CLI docs](https://docs.ignite.com)
-- [Cosmos SDK docs](https://docs.cosmos.network)
-- [Developer Chat](https://discord.gg/ignite)
+```
+~/go/bin/ledgerd tx ledger create-account cosmos15u9nl5n4524lc8zp36r6qvcqlqsma4jxx02fhd 10coin --from alice 
+~/go/bin/ledgerd tx ledger update-account cosmos1hpdvdzxhxsgfzxntm4rr2fqu90hryxwjx35e7m 10coin --from alice 
+
+~/go/bin/ledgerd tx ledger update-account cosmos15u9nl5n4524lc8zp36r6qvcqlqsma4jxx02fhd 100coin --from alice 
+
+curl -X GET "http://0.0.0.0:1317/dneprix/ledger/ledger/account" -H  "accept: application/json"
+{
+  "account": [
+    {
+      "address": "cosmos15u9nl5n4524lc8zp36r6qvcqlqsma4jxx02fhd",
+      "balance": {
+        "denom": "coin",
+        "amount": "100"
+      },
+      "creator": "cosmos15u9nl5n4524lc8zp36r6qvcqlqsma4jxx02fhd"
+    },
+    {
+      "address": "cosmos1hpdvdzxhxsgfzxntm4rr2fqu90hryxwjx35e7m",
+      "balance": {
+        "denom": "coin",
+        "amount": "10"
+      },
+      "creator": "cosmos15u9nl5n4524lc8zp36r6qvcqlqsma4jxx02fhd"
+    },
+  ],
+  "pagination": {
+    "next_key": null,
+    "total": "2"
+  }
+}
+
+curl -X GET "http://0.0.0.0:1317/dneprix/ledger/ledger/account/cosmos15u9nl5n4524lc8zp36r6qvcqlqsma4jxx02fhd" -H  "accept: application/json"
+{
+  "account": {
+    "address": "cosmos15u9nl5n4524lc8zp36r6qvcqlqsma4jxx02fhd",
+    "balance": {
+      "denom": "coin",
+      "amount": "100"
+    },
+    "creator": "cosmos15u9nl5n4524lc8zp36r6qvcqlqsma4jxx02fhd"
+  }
+}
+
+```
